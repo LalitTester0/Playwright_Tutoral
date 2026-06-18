@@ -2,7 +2,7 @@ import test, { expect } from "@playwright/test"
 
 
 
-test.only('First Playwright Test',async({browser})=>{
+test('First Playwright Test',async({browser})=>{
     const context=await browser.newContext();
     const page=await context.newPage();
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
@@ -16,14 +16,83 @@ test.only('First Playwright Test',async({browser})=>{
     await username.fill("rahulshettyacademy");
     await signbtn.click();
     let items=page.locator(".card-body a");
-    console.log(await items.nth(0).textContent())
+    //console.log(await items.nth(0).textContent())
+    const titles=await items.allTextContents();
+    console.log(titles)
 
 
 })
 
 
 test('page playwright test',async({page})=>{
-    await page.goto("https://www.google.com/")
-    console.log(await page.title())
-    await expect(page).toHaveTitle('Google');
+    await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
+    const signuplink= page.locator('.login-wrapper-footer-text');
+    let firstName= page.getByRole('textbox', { name: 'First Name' }); 
+    let lastName= page.getByRole('textbox', { name: 'Last Name' }); 
+    let email= page.getByPlaceholder('email@example.com'); 
+    let phoneNumber= page.getByPlaceholder('enter your number'); 
+    let gender= page.locator('//input[@value="Male"]'); 
+    let password= page.getByRole('textbox', { name: 'Passsword' })
+    let confirmpassword= page.getByRole('textbox', { name: 'Confirm Password' })
+    let register= page.getByRole('button', { name: 'Register' })
+    let checkbox=page.locator('[type*="checkbox"]');
+    let pwd2= page.getByRole('textbox', { name: 'enter your passsword' });
+    let loginBtn= page.getByRole('button', { name: 'Login' })
+    let productnames=page.locator('.card-body b');
+    let mailid='iamla42lit1431@gmail.com';
+    let pwd='Admin123';
+    await signuplink.click();
+    await firstName.fill('Lalit');
+    await lastName.fill('Jadhav');
+    await email.fill(mailid);
+    await phoneNumber.fill('7845124578');
+    await page.selectOption('[formcontrolname="occupation"]',{
+        label:'Doctor'
+    })
+    await gender.click();
+    await password.fill(pwd);
+    await confirmpassword.fill(pwd);
+    await checkbox.click();
+    await register.click();
+    await signuplink.click();
+    await email.fill(mailid);
+    await pwd2.fill(pwd);
+    await loginBtn.click();
+    const firstproductname=await productnames.nth(0).textContent();
+})
+
+test.only('Book phone',async({page})=>{
+    await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
+    let mailid='iamla42lit1431@gmail.com';
+    let pwd='Admin123';
+    let productName='iphone 13 pro';
+    let email= page.getByPlaceholder('email@example.com'); 
+    let pwd2= page.getByRole('textbox', { name: 'enter your passsword' });
+    let loginBtn= page.getByRole('button', { name: 'Login' })
+    let products=page.locator('.card-body');
+    let cart= page.getByRole('button', { name: 'Cart 1' });
+    await email.fill(mailid);
+    await pwd2.fill(pwd);
+    await loginBtn.click();
+    await page.waitForLoadState('networkidle');
+    const cou=await products.count()
+    for (let i=0;i<cou;i++){
+        let name=await products.nth(i).locator('b').textContent();
+        if (name===productName){
+           await products.nth(i).getByRole('button',{
+            name:'Add To Cart'
+           }).click();
+
+        }
+    }
+    await cart.click();
+    const texts = await page.locator('h3').allTextContents();
+    expect(texts).toContain(productName);
+    await page.getByRole('button', { name: 'Checkout' }).click();
+    let cartname= page.getByText(productName);
+    await expect(cartname).toBeVisible();
+    let quantity=await page.locator('.item__quantity').textContent() || "";
+    let numquantity=quantity.split(":")[1];
+    expect(Number(numquantity)).toEqual(1);
+
 })
