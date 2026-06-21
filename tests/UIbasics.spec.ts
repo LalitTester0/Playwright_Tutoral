@@ -94,5 +94,16 @@ test.only('Book phone',async({page})=>{
     let quantity=await page.locator('.item__quantity').textContent() || "";
     let numquantity=quantity.split(":")[1];
     expect(Number(numquantity)).toEqual(1);
+    let usermail=await page.locator('input.text-validated.ng-valid').inputValue();
+    expect(usermail).toEqual(mailid);
+    await page.getByPlaceholder('Select Country').pressSequentially('Ind')
+    await page.locator(':text-is("India")').click();
+    await page.locator('a.btnn').click();
+    let orderid=await page.locator('label.ng-star-inserted').textContent() || '';
+    let order=orderid.split('|')[1].trim();
+    await page.locator('label[routerlink$="/dashboard/myorders"]').click();
+    let tr=page.locator('tr').filter({ hasText: order });
+    tr.getByRole('button',{name:'View'}).click();
+    await page.waitForTimeout(5000)
 
 })
