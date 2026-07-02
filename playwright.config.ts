@@ -12,7 +12,9 @@ reporter:'html',
 
 use:{
   browserName:'chromium',
-  headless : true
+  headless : true,
+  screenshot: true,
+  trace:'retain-on-failure'
 }
 
 
