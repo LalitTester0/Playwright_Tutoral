@@ -1,16 +1,24 @@
-import test, { expect } from "@playwright/test";
+import { expect ,test,Page} from "@playwright/test";
 
 
-test('Create a brand new event ',async({page})=>{
-    const baseurl='https://eventhub.rahulshettyacademy.com';
-    await page.goto(baseurl+'/login');
+interface LoginArgs {
+  page: Page;
+  baseurl: string;
+}
+
+async function loginpage({page,baseurl}:LoginArgs){
+    await page.goto(`${baseurl}/login`);
     await page.getByPlaceholder('you@email.com').fill('lalit.jadhav@gmail.com');
     await page.getByRole('textbox', { name: 'Password' }).fill('Lalit@1431');
     await page.getByRole('button',{name:'Sign In'}).click();
     await expect(page.getByText('Browse Events →')).toBeVisible();
+}
+
+test('Create a brand new event ',async({page})=>{
+    const baseurl='https://eventhub.rahulshettyacademy.com';
+    await loginpage({page,baseurl});
     await page.getByRole('button', { name: 'Admin' }).click();
     await page.locator('a').filter({ hasText: 'Manage Events' }).first().click();
-    
     let eventName=`Lalit ${Date.now()}`;
     await page.getByPlaceholder('Event title').fill(eventName);
     await page.getByPlaceholder('Describe the event…').fill('Testing Activities')
