@@ -1,12 +1,12 @@
 import test, { expect } from "@playwright/test";
-import { LoginPage } from "../pageobjects/LoginPage";
-import { DashBoardPage } from "../pageobjects/DashBoardPage";
 import { POManager } from "../pageobjects/POManager";
+import { placeOrderTestData } from "./utils/placeorderTestData";
 
-test.only('Book phone',async({page})=>{
-    let mailid='iamla42lit1431@gmail.com';
-    let pwd='Admin123';
-    let productName='iphone 13 pro';
+for (const data of placeOrderTestData){
+test.only(`Book phone ${data.productName}`,async({page})=>{
+    let mailid=data.mailid;
+    let pwd=data.pwd;
+    let productName=data.productName;
     const poManager=new POManager(page);
     const loginpage= poManager.getloginPage();
     await loginpage.goto();
@@ -34,3 +34,4 @@ test.only('Book phone',async({page})=>{
 
 
 })
+}
