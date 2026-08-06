@@ -1,15 +1,19 @@
 {
   "name": "playwright-tutorial",
   "version": "1.0.0",
-   "type": "module",
+  "type": "module",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "regression":"npx playwright test tests/Dropdown.spec.ts",
+    "webTests":"npx playwright test tests/WebAPI2.spec.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.61.0",
-    "@types/node": "^25.9.3"
+    "@types/node": "^25.9.3",
+    "allure-playwright": "^3.10.2"
   }
 }

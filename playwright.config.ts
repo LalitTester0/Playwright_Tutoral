@@ -8,7 +8,7 @@ timeout: 40*1000,
 expect:{
   timeout :5000,
 },
-reporter:'html',
+reporter:'allure-playwright',
 
 use:{
   browserName:'chromium',

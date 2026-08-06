@@ -21,7 +21,7 @@ test('handling dropdown',async({page})=>{
     //await page.pause();
 })
 
-test.only('child window handling',async({browser})=>{
+test('child window handling',async({browser})=>{
     const context=await browser.newContext();
     const page=await context.newPage();
     await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
